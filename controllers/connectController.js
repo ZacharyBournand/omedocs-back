@@ -43,7 +43,7 @@ module.exports = {
     // Se connecter
     async login (request, response) {
         // Voir dans ma base de données si j'ai un utilisateur avec cet email
-        const user = await connectDataMapper.findUserByEmail(request.body.email);
+        const user = await connectDataMapper.findUserByEmail(request.body.emailConnexion);
 
         // Si aucun utilisateur a cet email, on renvoit une erreur d'authentification (401)
         if (! user) {
@@ -56,42 +56,23 @@ module.exports = {
             return;
         };
 
-        console.log(request.body.password);
-        console.log(user[0]);
-        console.log(user[0].password);
-
         // Je vérifie que le mot de passe haché qui est enregistré dans ma base de données correspond au mot de passe donnée par 
         // l'utilisateur
-        if (await bcrypt.compare(request.body.password, user[0].password)) {
-            console.log('good');
+        if (await bcrypt.compare(request.body.passwordConnexion, user[0].password)) {
 
             // On extrait les données de l'utilisateur qui sont stockés en base de données
             const userData = {
                 user
-                // userType: user[0].userType,
-                // establishment: user[0].establishment, 
-                //rpps: user[0].rpps, 
-                //finess: user[0].finess,
-                //adeli: user[0].adeli, 
-                //email: user[0].email, 
-                //password: user[0].password,
-                //phoneNumber: user[0].phoneNumber,
-                //address: user[0].address,
-                //city: user[0].city,
-                //region: user[0].region,
-                //zipCode: user[0].zipCode
             };
 
-            console.log(userData);
-
             // Générer un token
-            const token = jsonwebtoken.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m',  algorithm: 'HS256' });
+            const accessToken = jsonwebtoken.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m',  algorithm: 'HS256' });
 
             // Renvoyer notre token avec les infos de l'utilisateur au front
             response.status(200).json({ 
                 status: "success",
                 user: userData, 
-                token
+                accessToken
             });
         // Si le mote de passe est incorrect, on renvoit une erreur d'authentification (401)
         } else {

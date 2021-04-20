@@ -8,7 +8,6 @@ module.exports = {
                 [userType, establishment, rpps, finess, adeli, email, hashedPassword, phoneNumber, address, city, region, zipCode]
         );
 
-        console.log('result insert user : ', result.rows);
         return result.rows;
     },
 
@@ -20,7 +19,6 @@ module.exports = {
             [email]
         );
 
-        console.log('result select user : ', result.rows);
         return result.rows;
     },
 }
