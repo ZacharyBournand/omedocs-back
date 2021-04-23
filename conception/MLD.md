@@ -1,11 +1,8 @@
 
-pathology ( id, name )
+product ( id, product_name, expiration_date, number_of_boxes, quantity_in_box, mass, volume, unit_price, composition,   
+        dosage_form cis_code, #user(id) )
 
-product ( id, product_name, expiration_date, quantity, price, 
-    composition, dosage_form, cis_code, #user(id), #pathology(id) )
-
-user ( id, user_type, organization_name, rpps, finess, adeli, email,
-    password, phone_number, address, city, region, postal_code ) 
+user ( id, user_type, establishment, rpps, finess, adeli, email, password, phone_number, address, city, region, zip_code ) 
 
 order ( id, order_number, status, date, #user(id))
 

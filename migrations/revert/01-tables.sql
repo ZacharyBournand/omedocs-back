@@ -1,7 +1,8 @@
 -- Revert omedocs:tables-01 from pg
 
+-- Supprime les tables 
 BEGIN;
 
-DROP TABLE pathology, "user", product, "order", notification, productHasOrder;
+DROP TABLE "user", product, "order", notification, product_has_order;
 
 COMMIT;
