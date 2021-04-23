@@ -30,7 +30,9 @@ module.exports = {
         response.status(201).json({ addedProduct: newProduct });
     },
 
+    // Récupère et renvoit sous format JSON l'inventaire du vendeur
     async getInventory(request, response) {
+        // On récupère l'id de l'utilisateur ...
         const { userId } = request.params;
             
 

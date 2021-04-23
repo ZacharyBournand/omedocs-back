@@ -8,7 +8,8 @@ module.exports = {
     async insertProduct(name, expiration, quantity, price, cis, user_id) {
         const result = await client.query(`
             INSERT INTO product (name, expiration_date, quantity, unit_price, cis_code, user_id)
-                VALUES ($1, $2, $3, $4, $5, $6)`,
+                VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *`,
                 [name, expiration, quantity, price, cis, user_id]
         );
             
