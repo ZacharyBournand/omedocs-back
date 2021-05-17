@@ -49,7 +49,8 @@ CREATE TABLE notification (
 
 CREATE TABLE product_has_order (
     product_id INT REFERENCES product(id),
-    order_id INT REFERENCES "order"(id)
+    order_id INT REFERENCES "order"(id),
+    quantity_bought TEXT NOT NULL
 );
 
 COMMIT;

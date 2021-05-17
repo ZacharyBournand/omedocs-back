@@ -3,7 +3,6 @@ const client = require('./client');
 
 // On export les fonctions
 module.exports = {
-
     // Insère les données d'inscription d'un utilisateur dans la base de données 
     async insertUser(user_type, establishment, rpps, finess, adeli, email, hashed_password, phone_number, address, city, region, zip_code) {
         const result = await client.query(`
@@ -20,13 +19,12 @@ module.exports = {
     async findUserByEmail(email) {
         const result = await client.query(`
             SELECT *
-            FROM "user"
+                FROM "user"
             WHERE email=$1`,
             [email]
         );
 
         // Renvoit ces données 
-        return result.rows;
+        return result.rows[0];
     },
-    
 }
