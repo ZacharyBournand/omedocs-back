@@ -59,7 +59,7 @@ module.exports = {
                 response.status(401).json({
                     error: {
                         name: "authentification_error",
-                        detail: "bad-credentials"
+                        detail: "Cet utilisateur n'existe pas"
                     }
                 });
                 return;
@@ -67,13 +67,12 @@ module.exports = {
             // Sinon, je vérifie que le mot de passe haché qui est enregistré dans ma base de données correspond au mot de passe donnée 
             // par l'utilisateur
             } else if (await bcrypt.compare(request.body.passwordConnexion, user.password)) {
-                // On extrait les données de l'utilisateur qui sont stockés en base de données
-                const userData = {
-                    user
-                };
 
-                // Génère un token qui dure 30 minutes
-                const accessToken = jsonwebtoken.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m',  algorithm: 'HS256' });
+                // On retire le password avant de le renvoyer au front
+                user.password = undefined
+
+                // Génère un token qui servira a authentifié l'utilisateur
+                const accessToken = jsonwebtoken.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h',  algorithm: 'HS256' });
 
                 // Renvoi notre token avec les infos de l'utilisateur au front
                 response.status(200).json({ 
@@ -87,7 +86,7 @@ module.exports = {
                 response.status(401).json({
                     error: {
                         name: "authentification_error",
-                        detail: "bad-credentials"
+                        detail: "Mot de passe incorrect"
                     }
                 });
             };        

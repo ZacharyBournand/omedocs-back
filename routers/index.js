@@ -1,5 +1,5 @@
-// Récupère Express
-const express = require('express');
+// Récupère le router d'Express
+const router = require('express').Router();
 
 // Importe les routers enfants
 const connectRouter = require('./connectRouter');
@@ -16,9 +16,6 @@ const salesRouter = require('./salesRouter');
 
 // Importe le controller qui gère les erreurs
 const errorsMiddlewares = require('../controllers/errorsMiddlewares');
-
-// Permet de créer des nouveaux gestionnaires de routes pour manipuler les requêtes
-const router = express.Router();
 
 // Utilise les fichiers importés 
 router.use(connectRouter);
