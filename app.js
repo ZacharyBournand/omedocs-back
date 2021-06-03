@@ -4,6 +4,8 @@ require('dotenv').config();
 const express = require('express');
 // On récupère le package cors qui nous donne un middleware permettant d'activer le CORS avec plusieurs options à utiliser si besoin
 const cors = require('cors');
+// J'importe le middleware sanitizer
+const bodySanitizer = require('./middlewares/body-sanitizer');
 
 // On importe le dossier 'routers'
 const router = require('./routers');
@@ -20,8 +22,9 @@ app.use(cors({
 
 // On utilise un middleware intégré qui analyse les requêtes entrantes sous format JSON
 app.use(express.json());
-// On utilise un middleware intégré qui analyse les requêtes entrantes sous forme de tableau ou de chaîne de caractères
-app.use(express.urlencoded({ extended: true }));
+
+// a chaque requete si le body contient quelque chose on le nettoie
+app.use(bodySanitizer);
 
 // On demande à Express d'utiliser le routeur que l'on a configuré dans le dossier 'routers'
 app.use(router);
