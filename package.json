@@ -20,9 +20,11 @@
   "homepage": "https://github.com/O-clock-Pan/projet-antigaspi-medicaments-back#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "check-password-strength": "^2.0.3",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
+    "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "jsonwebtoken": "^8.5.1",

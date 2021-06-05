@@ -1,16 +1,31 @@
 // On importe les fonctions du fichier profileDataMapper
 const { updateEmail, updatePhoneNumber } = require('../dataMappers/profileDataMapper');
 
+// Librairie qui check si un email est valide
+const emailValidator = require('email-validator')
+
 // On export nos fonctions
 module.exports = {
     // Récupère et renvoit sous format JSON les informations du profil modifié de l'utilisateur
     async editEmail (request, response, next) {
         // On récupère l'id de l'utilisateur et on le parse en integer
         const userId = parseInt(request.params.userId, 10);
+        const { newEmail } = request.body;
 
         try {
+
+  // Je vérifie que l'email sois valide
+            if(!emailValidator.validate(newEmail)) {
+               return  response.status(401).json({
+                error: {
+                    message: "Unauthorized_email",
+                    messageDetail: "Le format de l'email est non valide"
+            }
+                })
+                    }
+
             // Envoi l'id de l'utilisateur à la fonction 'updateEmail' du dataMapper et récupère les infos de son profil modifié
-            const profile = await updateEmail(request.body.newEmail, userId);
+            const profile = await updateEmail(newEmail, userId);
 
             // Si on ne récupère pas d'utilisateur, on renvoit une erreur indiquant que le serveur n'a pas trouvé 
             // la requête demandée (404) 

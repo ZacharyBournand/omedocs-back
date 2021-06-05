@@ -6,6 +6,35 @@ const { insertUser, findUserByEmail } = require('../dataMappers/connectDataMappe
 // On récupère la librairie bcrypt qui permet de hasher les mots de passe
 const bcrypt = require('bcrypt');
 
+// Librairie qui check si un email est valide
+const emailValidator = require('email-validator')
+
+// Librairie qui teste la force d'un mot de passe
+const { passwordStrength } = require('check-password-strength')
+
+// Je personnalise les options de la librairie 'check-password-strength'
+const customOptions = [
+  {
+    id: 0,
+    value: "Too weak",
+    minDiversity: 0,
+    minLength: 0
+  },
+  {
+    id: 1,
+    value: "Weak",
+    minDiversity: 2,
+    minLength: 6
+  },
+  {
+    id: 2,
+    value: "Medium",
+    minDiversity: 3,
+    minLength: 8
+  }
+
+]
+
 // On export nos fonctions
 module.exports = {    
     // Récupère et renvoit sous format JSON les informations du nouvel utilisateur qui s'est inscrit
@@ -14,8 +43,40 @@ module.exports = {
             // Récupère les données à insérer en base de données
             const { user_type, establishment, rpps, finess, adeli, email, password, phone_number, address, city, region, zip_code } = request.body;
 
+        // Je vérifie que l'email sois valide
+            if(!emailValidator.validate(email)) {
+               return  response.status(401).json({
+                error: {
+                    message: "Unauthorized_email",
+                    messageDetail: "Le format de l'email est non valide"
+            }
+                })
+                        }
+
+            // Je teste la force du password avec mes customOptions passé en 2nd paramètre
+            // checkPassword contient un objet qui contient les propriété du password (lenght, value, contains)
+            const checkPassword = passwordStrength(password, customOptions)
+
+            // Si le password ne respecte pas les conditions je renvoie une erreur
+            if(checkPassword.length < 8) {
+                return response.status(401).json({
+                error: {
+                   message: "Unauthorized_password",
+                    messageDetail: "Le mot de passe doit contenir au moins 8 caractère"
+                 }
+             })
+            }
+            if(checkPassword.value !== "Medium") {
+               return response.status(401).json({
+                error: {
+                   message: "Unauthorized_password",
+                    messageDetail: "Le mot de passe doit répondre a au moins 3 de ces critères: minuscule, majuscule, nombre, caractère spécial"
+                 }
+             })
+}
+
             // Hash le mot de passe
-            const hashedPassword = await bcrypt.hash(password, 10);
+           const hashedPassword = await bcrypt.hash(password, 10);
 
             // Envoi les données à la fonction 'insertUser' du dataMapper et récupère son résultat
             const newUser = await insertUser (
@@ -58,8 +119,8 @@ module.exports = {
             if (!user) {
                 response.status(401).json({
                     error: {
-                        name: "authentification_error",
-                        detail: "Cet utilisateur n'existe pas"
+                        message: "authentification_error",
+                        messageDetail: "Cet utilisateur n'existe pas"
                     }
                 });
                 return;
@@ -85,8 +146,8 @@ module.exports = {
             } else {
                 response.status(401).json({
                     error: {
-                        name: "authentification_error",
-                        detail: "Mot de passe incorrect"
+                        message: "authentification_error",
+                        messageDetail: "Mot de passe incorrect"
                     }
                 });
             };        
