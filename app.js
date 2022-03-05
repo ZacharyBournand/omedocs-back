@@ -17,7 +17,7 @@ const app = express();
 // du domaine utilisé par cette API
 app.use(cors({
     // Permet à l'URL donné de pouvoir accéder à l'API
-    origin: ['http://localhost:8080', 'http://o-medocs.surge.sh'],
+    origin: '*',
 }));
 
 // On utilise un middleware intégré qui analyse les requêtes entrantes sous format JSON
@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(bodySanitizer);
 
 // On demande à Express d'utiliser le routeur que l'on a configuré dans le dossier 'routers'
-app.use(router);
+app.use('/api', router);
 
 // Je demande dans mon application à récupérer une variable d'environnement pour déterminer quel port utiliser pour le serveur HTTP.
 // Si on ne me donne aucune variable PORT dans l'environnement alors je prend le port 3000 

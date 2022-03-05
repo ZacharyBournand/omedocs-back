@@ -13,5 +13,7 @@ const client = new Pool({
     }
 });
 
+client.connect();
+
 // On export les nouvelles connexions faites à notre base de données
 module.exports = client;
