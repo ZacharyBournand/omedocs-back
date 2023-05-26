@@ -10,7 +10,7 @@ Our e-commerce web application seeks to connect health professionals to reduce t
 
 Our application enables two types of users to sign up: pharmacies to sell medical products and hospitals to buy the medicine.
 
-## Main Takeaways:
+## Functionalities:
 Pharmacy
 - Edit profile
 - Search for a pharmacy and/or hospital
