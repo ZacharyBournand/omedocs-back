@@ -28,8 +28,10 @@ Hospital
 - Look up your order history
 
 ## Contributors
-- [ZacharyBournand](https://github.com/ZacharyBournand)
 - [Geoffrey-Maillot](https://github.com/Geoffrey-Maillot)
+- [LambertGuastavino](https://github.com/LambertGuastavino)
+- [fmarc39](https://github.com/fmarc39)
+- [ZacharyBournand](https://github.com/ZacharyBournand)
 
 ## Test O'Médocs
 View our project on http://o-medocs.surge.sh/
