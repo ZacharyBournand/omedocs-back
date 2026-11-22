@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "build": "node --check app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +21,8 @@
   },
   "homepage": "https://github.com/O-clock-Pan/projet-antigaspi-medicaments-back#readme",
   "dependencies": {
+    "@neon/config": "^1.14.5",
+    "@neon/env": "^2.1.8",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.0.0",
