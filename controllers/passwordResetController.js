@@ -12,7 +12,7 @@ const { findUser } = require('../dataMappers/passwordResetDataMapper');
 // On export notre fonction
 module.exports = {
     // Récupère l'adresse mail de l'utilisateur à qui envoyer l'email et renvoit ....
-    async createNewPassword (request, response) {
+    async createNewPassword(request, response) {
         // On récupère l'adresse mail de l'utilisateur 
         const { email } = request.body;
 
@@ -26,23 +26,22 @@ module.exports = {
         // Envoi de l'adresse mail à la fonction 'findUser' du dataMapper et récupère les infos de l'utilisateur avec cette adresse
         const user = await findUser(email);
         console.log('user: ', user);
-        
+
         // Si on ne récupère pas d'utilisateur, on renvoit une erreur indiquant que le serveur n'a pas trouvé 
         // la requête demandée (404)  
         if (!user) {
             next();
-    
+
         } else {
             // Sinon, on extrait les données de l'utilisateur stockées en base de données
             const userData = {
                 user
             };
-            
+
             // Génère un token qui dure 30 minutes
-            const accessToken = jsonwebtoken.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m',  algorithm: 'HS256' });
+            const accessToken = jsonwebtoken.sign(userData, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30m', algorithm: 'HS256' });
 
             console.log('email: ', user.email);
-            console.log('password: ', user.password);
 
             // On crée un objet transporter pour pouvoir envoyer un email
             const transporter = nodemailer.createTransport({
@@ -68,7 +67,7 @@ module.exports = {
                     'Nous vous avons envoyé cet e-mail pour vous aider à vous connecter à votre compte O\'Medocs.\n\n'
                     + 'Si vous n\'avez pas essayé de vous connecter à votre compte ou si vous n\'avez pas demandé cet e-mail, pas de panique.\n\n'
                     + 'Votre adresse e-mail a peut-être été entrée par oreur. Vous pouvez simplement ignorer ou supprimer cet e-mail, et utiliser votre mot de passe existant pour vous connecter.\n\n'
-                    + `http://localhost:3020/reset/${accessToken}\n\n`,
+                    + `${process.env.FRONTEND_URL || 'https://omedocs-front.onrender.com'}/reset/${accessToken}\n\n`,
             };
             console.log('sending mail');
 

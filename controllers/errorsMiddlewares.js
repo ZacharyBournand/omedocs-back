@@ -16,11 +16,18 @@ module.exports = {
     // et les autres sont les param. classiques des middlewares. On tombe dans ce middleware quand, depuis un autre fichier, on appelle 
     // next() en lui passant un argument qui deviendra ce 1er paramètre de notre middleware
     async error500(error, request, response, next) {
+        if (error.name === 'UnauthorizedError') {
+            return response.status(401).json({
+                error: {
+                    message: "Unauthorized"
+                }
+            });
+        }
+
+        console.error(error);
         response.status(500).json({
             error: {
-                message: "Fatal error",
-                messageDetail: error.message,
-                infos: error
+                message: "Internal server error"
             }
         });
     }

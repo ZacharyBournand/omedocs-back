@@ -29,6 +29,7 @@ app.use(router);
 
 // Je demande dans mon application à récupérer une variable d'environnement pour déterminer quel port utiliser pour le serveur HTTP.
 // Si on ne me donne aucune variable PORT dans l'environnement alors je prend le port 3000 
-app.listen(process.env.PORT || 3000, () => {
-    console.log('CORS-enabled server running on :', process.env.PORT);
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log('CORS-enabled server running on :', port);
 });

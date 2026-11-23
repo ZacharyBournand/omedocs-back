@@ -1,20 +1,26 @@
 // Récupère la libraire Stripe qui permet d'accéder à son API et récupère la clé liée à notre compte
-const stripe = require('stripe')('sk_test_51Ij1IsAClzkudXaowA7OO3trBZhzgZAZFJYTdV2bmRyCHl5b3qzfa0GDfJl3gFG01nh78apKVCoKEilNdWtGwCvD00xb5dXLH0');
+const stripe = process.env.STRIPE_SECRET_KEY
+    ? require('stripe')(process.env.STRIPE_SECRET_KEY)
+    : null;
 // Récupère le package "uuid" qui permet de créer un identifiant unique universel
 const { v4: uuidv4 } = require('uuid');
-// Crée l'identifiant unique universel 
-uuidv4();
 
 // On export notre fonction
 module.exports = {
-    // On renvoit la clé Stripe au front
-    // Comme on n'utilise pas le paramètre "request", one peut le remplacer par "_" 
+    // On renvoit la clé publique Stripe au front (ou un statut OK si non configurée)
+    // Comme on n'utilise pas le paramètre "request", on peut le remplacer par "_"
     sendStripeKey (_, response) {
-        response.send('sk_test_51Ij1IsAClzkudXaowA7OO3trBZhzgZAZFJYTdV2bmRyCHl5b3qzfa0GDfJl3gFG01nh78apKVCoKEilNdWtGwCvD00xb5dXLH0');
+        if (process.env.STRIPE_PUBLISHABLE_KEY) {
+            return response.send(process.env.STRIPE_PUBLISHABLE_KEY);
+        }
+        return response.status(200).json({ status: 'ok' });
     },
 
     // Initialise l'instance de paiement
     async initializePaymentInstance (request, response) {
+        if (!stripe) {
+            return response.status(503).json({ status: 'failure', error: 'Stripe is not configured' });
+        }
         console.log('Request:', request.body);
         // On initialise ces deux variables au cas où on les utilise pour afficher une erreur et/ou un statut (succès ou pas)
         let error;
@@ -57,8 +63,9 @@ module.exports = {
             status = 'success';
         }
         // S'il y a une erreur au niveau du serveur, on renvoit un statut d'échouement avec l'erreur
-        catch (error) {
-            console.error('Error:', error);
+        catch (err) {
+            console.error('Error:', err);
+            error = err.message;
             status = 'failure';
         }
         // Renvoit en réponse l'état de la requête sous format JSON

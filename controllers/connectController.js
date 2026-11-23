@@ -67,9 +67,10 @@ module.exports = {
             // Sinon, je vérifie que le mot de passe haché qui est enregistré dans ma base de données correspond au mot de passe donnée 
             // par l'utilisateur
             } else if (await bcrypt.compare(request.body.passwordConnexion, user.password)) {
-                // On extrait les données de l'utilisateur qui sont stockés en base de données
+                // On extrait les données de l'utilisateur sans son mot de passe
+                const { password, ...safeUser } = user;
                 const userData = {
-                    user
+                    user: safeUser
                 };
 
                 // Génère un token qui dure 30 minutes
@@ -78,7 +79,7 @@ module.exports = {
                 // Renvoi notre token avec les infos de l'utilisateur au front
                 response.status(200).json({ 
                     status: "success",
-                    user, 
+                    user: safeUser, 
                     accessToken
                 });
 
