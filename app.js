@@ -16,7 +16,7 @@ const app = express();
 // du domaine utilisé par cette API
 app.use(cors({
     // Permet à l'URL donné de pouvoir accéder à l'API
-    origin: ['http://localhost:8080', 'http://o-medocs.surge.sh', 'https://o-medocs.surge.sh'],
+    origin: ['http://localhost:8080', 'http://o-medocs.surge.sh', 'https://o-medocs.surge.sh', 'https://omedocs-front.onrender.com'],
 }));
 
 // On utilise un middleware intégré qui analyse les requêtes entrantes sous format JSON
