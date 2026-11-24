@@ -34,7 +34,7 @@ Hospital
 - [ZacharyBournand](https://github.com/ZacharyBournand)
 
 ## Test O'Médocs
-View our project on http://o-medocs.surge.sh/ (Tip: Ctrl + click on the link to open it in a new tab)
+View our project on https://omedocs-front.onrender.com (Tip: Ctrl + click on the link to open it in a new tab)
 - Log in as a pharmacist:
   - email: pharmacieetoile@gmail.com
   - password: Racekok974
